@@ -17,6 +17,8 @@ public class Producto {
 	
 	
 	private Categoria categoria;
+	
+	private Imagen imagen;
 
 
 	public Producto() {
@@ -38,6 +40,16 @@ public class Producto {
 		builder.append(categoria);
 		builder.append("]");
 		return builder.toString();
+	}
+
+
+	public Imagen getImagen() {
+		return imagen;
+	}
+
+
+	public void setImagen(Imagen imagen) {
+		this.imagen = imagen;
 	}
 
 

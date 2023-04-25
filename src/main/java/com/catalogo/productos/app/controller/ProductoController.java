@@ -21,9 +21,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.catalogo.productos.app.inter.crud.ICrud;
+import com.catalogo.productos.app.model.Imagen;
 import com.catalogo.productos.app.model.Producto;
 
 @CrossOrigin("*")
@@ -34,9 +37,29 @@ public class ProductoController {
 	@Qualifier("productoService")
 	@Autowired
 	private ICrud<Producto> productoService;
+	
+	@Qualifier("imagenService")
+	@Autowired
+	private ICrud<Imagen> imagenService;
 
 	private static final Logger log = LoggerFactory.getLogger(ProductoController.class);
 
+	
+	@PostMapping("/v2")
+	public ResponseEntity<Producto> saveConImagen(Producto producto,@RequestPart MultipartFile file) {
+		try {
+			Imagen img =  imagenService.save(new Imagen(file.getBytes()));
+			producto.setImagen(img);
+			productoService.save(producto);
+			return ResponseEntity.created(URI.create("/productos/" + producto.getId())).body(producto);
+
+		} catch (Exception e) {
+
+			return ResponseEntity.badRequest().build();
+		}
+
+	}
+	
 	@PostMapping
 	public ResponseEntity<Producto> save(@RequestBody Producto producto) {
 		try {
