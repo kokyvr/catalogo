@@ -115,7 +115,9 @@ public class ProductoController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteById(@PathVariable String id) {
 		try {
-			productoService.deleteById(id);
+			Producto p = productoService.getById(id);
+			productoService.deleteById(p.getId());
+			imagenService.deleteById(p.getImagen().getId());
 			return ResponseEntity.noContent().build();
 		} catch (Exception e) {
 			return ResponseEntity.notFound().build();
