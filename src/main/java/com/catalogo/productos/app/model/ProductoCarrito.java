@@ -3,13 +3,18 @@ package com.catalogo.productos.app.model;
 import java.util.Objects;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Document(collection = "producto_carro")
 public class ProductoCarrito {
 
 	@Id
 	private String id;
+	
+	private String idProducto;
 	
 	private String nombre;
 	
@@ -19,24 +24,50 @@ public class ProductoCarrito {
 	
 	private Double total;
 	
+	
+	@JsonIgnore
+	@DBRef(lazy = false)
 	private Factura factura;
-	
-	
-	
 
 
-	public String getId() {
-		return id;
+
+
+
+
+
+
+	public ProductoCarrito(String idProducto, String nombre, Integer cantidad, Double precio, Double total,
+			Factura factura) {
+		this.idProducto = idProducto;
+		this.nombre = nombre;
+		this.cantidad = cantidad;
+		this.precio = precio;
+		this.total = total;
+		this.factura = factura;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+
+
+	public String getIdProducto() {
+		return idProducto;
 	}
+
+
+
+	public void setIdProducto(String idProducto) {
+		this.idProducto = idProducto;
+	}
+
+
+
+
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		return Objects.hash(idProducto);
 	}
+
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -47,14 +78,15 @@ public class ProductoCarrito {
 		if (getClass() != obj.getClass())
 			return false;
 		ProductoCarrito other = (ProductoCarrito) obj;
-		return Objects.equals(id, other.id);
+		return Objects.equals(idProducto, other.idProducto);
 	}
 
-	public ProductoCarrito(String nombre, Integer cantidad, Double precio, Factura factura) {
+
+
+	public ProductoCarrito(String nombre, Integer cantidad, Double precio) {
 		this.nombre = nombre;
 		this.cantidad = cantidad;
 		this.precio = precio;
-		this.factura = factura;
 	}
 
 	public void setTotal(Double total) {
@@ -81,13 +113,19 @@ public class ProductoCarrito {
 		return this.precio * this.cantidad;
 	}
 
+
+
 	public Factura getFactura() {
 		return factura;
 	}
 
+
+
 	public void setFactura(Factura factura) {
 		this.factura = factura;
 	}
+
+
 
 	public ProductoCarrito() {
 	}
@@ -111,6 +149,17 @@ public class ProductoCarrito {
 
 	public Double getTotal() {
 		return total;
+	}
+
+
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("ProductoCarrito [id=").append(id).append(", idProducto=").append(idProducto).append(", nombre=")
+				.append(nombre).append(", cantidad=").append(cantidad).append(", precio=").append(precio)
+				.append(", total=").append(total).append(", factura=").append(factura).append("]");
+		return builder.toString();
 	}
 
 

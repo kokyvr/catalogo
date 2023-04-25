@@ -2,14 +2,12 @@ package com.catalogo.productos.app.service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.catalogo.productos.app.dao.ProductoCarritoDao;
 import com.catalogo.productos.app.inter.crud.ICarritoCrudAll;
-import com.catalogo.productos.app.inter.crud.ICrud;
 import com.catalogo.productos.app.model.ProductoCarrito;
 
 @Service("productoCarritoService")
@@ -41,7 +39,6 @@ public class ProductoCarritoService implements ICarritoCrudAll<ProductoCarrito>{
 		ProductoCarrito pr = getById(id);
 		if(Objects.nonNull(pr)) {
 			pr.setCantidad(data.getCantidad());
-			pr.setFactura(data.getFactura());
 			pr.setNombre(data.getNombre());
 			pr.setPrecio(data.getPrecio());
 			dao.save(pr);

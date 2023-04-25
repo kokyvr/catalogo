@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -34,6 +35,7 @@ public class FacturaController {
 
 	@Autowired
 	private ICrudProductoWithImage productoService;
+	
 	@Qualifier("productoCarritoService")
 	@Autowired
 	private ICarritoCrudAll<ProductoCarrito> productoCarritoService;
@@ -43,35 +45,50 @@ public class FacturaController {
 	@PostMapping
 	public ResponseEntity<Map<String, Object>> ventaSave(@RequestBody Factura factura) {
 		Iterable<Producto> productos = productoService
-				.findAllById(factura.getProductos().stream().map(ids -> ids.getId()).collect(Collectors.toSet()));
-		factura.getProductos().stream().map(fa -> {
-			productos.forEach(p -> {
-				if (p.getId().equalsIgnoreCase(fa.getId())){
-					fa.setPrecio(p.getPrecio());
-					fa.setNombre(p.getNombre());
-					fa.setTotal(fa.calcularTotal());
-				}
-			});
-			
-			return fa;
-		});
-		log.info("factura : {} " ,factura.toString());
-		
-		factura.setTotal(factura.getProductos().stream().mapToDouble(p->p.getTotal()).sum());
-		Factura fabD = facturaService.save(factura);
-		factura.getProductos().stream().forEach(p->p.setFactura(fabD));
-		productoCarritoService.saveAll(fabD.getProductos().stream().collect(Collectors.toList()));
+				.findAllById(factura.getProductos().stream().map(ids -> ids.getIdProducto()).collect(Collectors.toSet()));
 		Map<String, Object> rpta = new HashMap<>();
-		if(Objects.nonNull(fabD)) {
-			rpta.put("factura", fabD);
-			
-			return ResponseEntity.ok(rpta);
-		}
+		if(productos.spliterator().getExactSizeIfKnown()>0) {
+			Set<ProductoCarrito> newProducto = factura.getProductos().stream().map(fa -> {
+				productos.forEach(p -> {
+					if (p.getId().equalsIgnoreCase(fa.getIdProducto())){
+						fa.setIdProducto(p.getId());
+						fa.setPrecio(p.getPrecio());
+						fa.setNombre(p.getNombre());
+						fa.setTotal(fa.calcularTotal());
+						
+						factura.agregarProducto(fa);
+						
+					}
+				});
+				return fa;
+			}).collect(Collectors.toSet());
+			Factura fabD = facturaService.save(factura);
+			factura.setProductos(newProducto.stream().map(np->{
+				np.setFactura(fabD);
+				return np;
+			}).collect(Collectors.toSet()));
+			factura.setTotal(factura.getProductos().stream().mapToDouble(p->p.getTotal()).sum());
 		
-		rpta.put("error", "Hubo un error al comprar");
+			
+			productoCarritoService.saveAll(fabD.getProductos().stream().collect(Collectors.toList()));
+			
+			if(Objects.nonNull(fabD)) {
+				rpta.put("factura", fabD);
+				
+				return ResponseEntity.ok(rpta);
+			}
+			
+			rpta.put("error", "Hubo un error al comprar");
+			rpta.put("status", HttpStatus.BAD_REQUEST);
+			rpta.put("tiemstamp", new Date());
+			return ResponseEntity.badRequest().body(rpta);
+		}
+		rpta.put("error", "Carrito de compras vacio");
 		rpta.put("status", HttpStatus.BAD_REQUEST);
 		rpta.put("tiemstamp", new Date());
 		return ResponseEntity.badRequest().body(rpta);
+		
+		
 
 	}
 

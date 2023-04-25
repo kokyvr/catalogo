@@ -1,12 +1,17 @@
 package com.catalogo.productos.app.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "facturas")
 public class Factura {
 
+	@Id
+	private String id;
+	
 	public Set<ProductoCarrito> productos;
 	
 	public Double total;
@@ -20,6 +25,13 @@ public class Factura {
 
 	
 	
+	
+
+	public Factura() {
+		this.productos = new HashSet<>();
+	
+	}
+
 	public void agregarProducto(ProductoCarrito productoCar) {
 		this.productos.add(productoCar);
 	}
