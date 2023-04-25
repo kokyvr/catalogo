@@ -51,10 +51,6 @@ public class ImagenService implements ICrud<Imagen>{
 		
 	}
 
-	@Override
-	public Imagen getByNombre(String nombre) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 }

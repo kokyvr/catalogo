@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.catalogo.productos.app.model.Producto;
 
-public interface ICrudImage {
+public interface IImagen {
 	
 	public List<Producto> findAllProductosWithOutImage();
 	

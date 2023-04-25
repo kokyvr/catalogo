@@ -14,7 +14,7 @@ public interface ICrud<T> {
 	
 	public void deleteById(String id);
 	
-	public T getByNombre(String nombre);
+	
 	
 	
 }

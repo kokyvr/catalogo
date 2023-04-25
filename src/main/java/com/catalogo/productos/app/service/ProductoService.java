@@ -1,6 +1,9 @@
 package com.catalogo.productos.app.service;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,6 +47,7 @@ public class ProductoService implements ICrudProductoWithImage{
 			producto.setCategoria(data.getCategoria());
 			
 			dao.save(producto);
+			
 		}
 
 		return producto;
@@ -66,6 +70,12 @@ public class ProductoService implements ICrudProductoWithImage{
 	public List<Producto> findAllProductosWithOutImage() {
 		// TODO Auto-generated method stub
 		return dao.findAllWithOutImage();
+	}
+
+	@Override
+	public Set<Producto> findAllById(Set<String> ids) {
+		// TODO Auto-generated method stub
+		return (Set<Producto>) dao.findAllById(ids);
 	}
 
 	

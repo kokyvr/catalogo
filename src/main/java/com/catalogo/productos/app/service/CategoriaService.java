@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.catalogo.productos.app.dao.CategoriaDao;
-import com.catalogo.productos.app.inter.crud.ICrud;
+import com.catalogo.productos.app.inter.crud.ICrudFindByString;
 import com.catalogo.productos.app.model.Categoria;
 
 @Service
-public class CategoriaService implements ICrud<Categoria>{
+public class CategoriaService implements ICrudFindByString<Categoria>{
 
 	@Autowired
 	private CategoriaDao dao;

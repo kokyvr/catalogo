@@ -7,22 +7,24 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Producto {
 	
 	@Id
-	private String id;
+	protected String id;
 	
-	private String nombre;
+	protected String nombre;
 	
-	private Double precio;
+	protected Double precio;
 	
 	private Integer stock;
 	
 	
-	private Categoria categoria;
+	protected Categoria categoria;
 	
 	private Imagen imagen;
 
 
 	public Producto() {
 	}
+
+
 
 
 	@Override
