@@ -61,7 +61,7 @@ public class CategoriaController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Map<String, Object>> update(@RequestBody Categoria categoria,String id){
+	public ResponseEntity<Map<String, Object>> update(@RequestBody Categoria categoria,@PathVariable String id){
 		Map<String, Object> rpta = new HashMap<>();
 		Categoria cat = categoriaService.update(categoria, id);
 		if(Objects.nonNull(cat)) {
