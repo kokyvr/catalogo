@@ -3,6 +3,8 @@ package com.catalogo.productos.app.controller;
 import java.net.URI;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,8 @@ import com.catalogo.productos.app.model.Categoria;
 @RequestMapping("/categorias")
 @RestController
 public class CategoriaController {
+
+	private static final Logger log =LoggerFactory.getLogger(CategoriaController.class);
 
 	
 	@Qualifier("categoriaService")

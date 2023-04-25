@@ -46,7 +46,7 @@ public class ProductoService implements ICrud<Producto>{
 			dao.save(producto);
 		}
 		else {
-			new RuntimeException("Producto no encontrado con id :" + id);
+			producto = null;
 		}
 		return producto;
 		

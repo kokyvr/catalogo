@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -32,6 +34,8 @@ public class ProductoController {
 	@Qualifier("productoService")
 	@Autowired
 	private ICrud<Producto> productoService;
+
+	private static final Logger log = LoggerFactory.getLogger(ProductoController.class);
 
 	@PostMapping
 	public ResponseEntity<Producto> save(@RequestBody Producto producto) {
@@ -60,16 +64,17 @@ public class ProductoController {
 	@PutMapping("/{id}")
 	public ResponseEntity<Map<String, Object>> update(@RequestBody Producto producto, @PathVariable String id) {
 		Map<String, Object> rpta = new HashMap<>();
-		try {
-			Producto p = productoService.update(producto, id);
+		Producto p = productoService.update(producto, id);
+		if (Objects.nonNull(p)) {
+
 			rpta.put("producto", p);
 			return ResponseEntity.created(URI.create("/productos" + producto.getId())).body(rpta);
-		} catch (Exception e) {
-			rpta.put("message", e.getMessage());
-			rpta.put("timestamp", new Date());
-			rpta.put("error-code", HttpStatus.NOT_FOUND);
-			return new ResponseEntity<Map<String, Object>>(rpta, HttpStatus.NOT_FOUND);
 		}
+
+		rpta.put("message", "ID " + id + " No ENCONTRADO");
+		rpta.put("timestamp", new Date());
+		rpta.put("error-code", HttpStatus.NOT_FOUND);
+		return new ResponseEntity<Map<String, Object>>(rpta, HttpStatus.NOT_FOUND);
 
 	}
 
@@ -87,6 +92,7 @@ public class ProductoController {
 	@GetMapping("/{nombre}")
 	public ResponseEntity<Producto> findByNombre(@PathVariable String nombre) {
 		Producto p = productoService.getByNombre(nombre);
+		log.info("Producto findByNombre getId {}", p);
 		if (Objects.nonNull(p)) {
 			return ResponseEntity.ok(p);
 		}
