@@ -43,10 +43,10 @@ public class FacturaController {
 
 	@PostMapping
 	public ResponseEntity<Map<String, Object>> ventaSave(@RequestBody Factura factura) {
-		Set<Producto> productos = productoService
+		Iterable<Producto> productos = productoService
 				.findAllById(factura.getProductos().stream().map(ids -> ids.getId()).collect(Collectors.toSet()));
 		factura.getProductos().stream().map(fa -> {
-			productos.stream().forEach(p -> {
+			productos.forEach(p -> {
 				if (p.getId().equalsIgnoreCase(fa.getId())){
 					fa.setPrecio(p.getPrecio());
 					fa.setNombre(p.getNombre());
