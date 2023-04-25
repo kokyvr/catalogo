@@ -38,7 +38,7 @@ public class CategoriaService implements ICrud<Categoria>{
 	public Categoria update(Categoria data, String id) {
 		Categoria categoria = getById(id);
 		if(categoria !=null) {
-			categoria.setNombre(data.getId());
+			categoria.setNombre(data.getNombre());
 			
 			dao.save(categoria);
 	
