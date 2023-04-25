@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.catalogo.productos.app.inter.crud.ICrud;
+import com.catalogo.productos.app.inter.crud.ICrudProductoWithImage;
 import com.catalogo.productos.app.model.Imagen;
 import com.catalogo.productos.app.model.Producto;
 
@@ -34,9 +35,8 @@ import com.catalogo.productos.app.model.Producto;
 @RestController
 public class ProductoController {
 
-	@Qualifier("productoService")
 	@Autowired
-	private ICrud<Producto> productoService;
+	private ICrudProductoWithImage productoService;
 	
 	@Qualifier("imagenService")
 	@Autowired
@@ -83,6 +83,17 @@ public class ProductoController {
 			return ResponseEntity.noContent().build();
 		}
 	}
+	@GetMapping("/findAll/v2")
+	public ResponseEntity<List<Producto>> findAllWithOutImage() {
+		try {
+			List<Producto> productoAll = productoService.findAllProductosWithOutImage();
+			return ResponseEntity.ok(productoAll);
+
+		} catch (Exception e) {
+			return ResponseEntity.noContent().build();
+		}
+	}
+	
 
 	@PutMapping("/{id}")
 	public ResponseEntity<Map<String, Object>> update(@RequestBody Producto producto, @PathVariable String id) {

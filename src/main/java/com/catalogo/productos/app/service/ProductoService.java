@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.catalogo.productos.app.dao.ProductoDao;
-import com.catalogo.productos.app.inter.crud.ICrud;
+import com.catalogo.productos.app.inter.crud.ICrudProductoWithImage;
 import com.catalogo.productos.app.model.Producto;
 
 @Service
-public class ProductoService implements ICrud<Producto>{
+public class ProductoService implements ICrudProductoWithImage{
 
 	@Autowired
 	private ProductoDao dao;
@@ -60,6 +60,12 @@ public class ProductoService implements ICrud<Producto>{
 	public Producto getByNombre(String nombre) {
 		// TODO Auto-generated method stub
 		return dao.findByNombre(nombre).orElse(null);
+	}
+
+	@Override
+	public List<Producto> findAllProductosWithOutImage() {
+		// TODO Auto-generated method stub
+		return dao.findAllWithOutImage();
 	}
 
 	
