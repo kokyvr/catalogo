@@ -2,14 +2,12 @@ package com.catalogo.productos.app.controller;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
-import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -17,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.catalogo.productos.app.inter.crud.ICarritoCrudAll;
@@ -41,6 +38,8 @@ public class FacturaController {
 	@Autowired
 	private ICarritoCrudAll<ProductoCarrito> productoCarritoService;
 
+	private static final Logger log = LoggerFactory.getLogger(FacturaController.class);
+	
 	@PostMapping
 	public ResponseEntity<Map<String, Object>> ventaSave(@RequestBody Factura factura) {
 		Iterable<Producto> productos = productoService
@@ -50,11 +49,14 @@ public class FacturaController {
 				if (p.getId().equalsIgnoreCase(fa.getId())){
 					fa.setPrecio(p.getPrecio());
 					fa.setNombre(p.getNombre());
-					fa.calcularTotal();
+					fa.setTotal(fa.calcularTotal());
 				}
 			});
+			
 			return fa;
 		});
+		log.info("factura : {} " ,factura.toString());
+		
 		factura.setTotal(factura.getProductos().stream().mapToDouble(p->p.getTotal()).sum());
 		Factura fabD = facturaService.save(factura);
 		factura.getProductos().stream().forEach(p->p.setFactura(fabD));

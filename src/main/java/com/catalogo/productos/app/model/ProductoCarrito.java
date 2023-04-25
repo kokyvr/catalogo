@@ -57,6 +57,10 @@ public class ProductoCarrito {
 		this.factura = factura;
 	}
 
+	public void setTotal(Double total) {
+		this.total = total;
+	}
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -73,8 +77,8 @@ public class ProductoCarrito {
 		this.precio = precio;
 	}
 
-	public void calcularTotal() {
-		this.total = this.precio * this.cantidad;
+	public double calcularTotal() {
+		return this.precio * this.cantidad;
 	}
 
 	public Factura getFactura() {

@@ -63,5 +63,14 @@ public class Factura {
 	public void setNumeroTelefonico(String numeroTelefonico) {
 		this.numeroTelefonico = numeroTelefonico;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Factura [productos=").append(productos).append(", total=").append(total).append(", tipoPago=")
+				.append(tipoPago).append(", correo=").append(correo).append(", numeroTelefonico=")
+				.append(numeroTelefonico).append("]");
+		return builder.toString();
+	}
 	
 }
