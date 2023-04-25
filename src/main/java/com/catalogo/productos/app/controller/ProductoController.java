@@ -133,5 +133,12 @@ public class ProductoController {
 		}
 		return ResponseEntity.notFound().build();
 	}
-
+	@GetMapping("/id/{id}")
+	public ResponseEntity<Producto> findById(@PathVariable String id){
+		Producto p = productoService.getById(id);
+		if(Objects.nonNull(p)) {
+			return ResponseEntity.ok(p);
+		}
+		return ResponseEntity.notFound().build();
+	}
 }

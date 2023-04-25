@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.catalogo.productos.app.dao.CategoriaDao;
+import com.catalogo.productos.app.dao.ImagenDao;
 import com.catalogo.productos.app.dao.ProductoDao;
 import com.catalogo.productos.app.model.Categoria;
 import com.catalogo.productos.app.model.Producto;
@@ -20,6 +21,9 @@ public class AppCatalogoApplication implements CommandLineRunner {
 
 	@Autowired
 	private CategoriaDao categoriaDao;
+	
+	@Autowired
+	private ImagenDao imagenDao;
 
 	public static void main(String[] args) {
 		SpringApplication.run(AppCatalogoApplication.class, args);
@@ -29,6 +33,7 @@ public class AppCatalogoApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		categoriaDao.deleteAll();
 		productoDao.deleteAll();
+		imagenDao.deleteAll();
 
 		Categoria categoria1 = new Categoria("Electrodomestico");
 		Categoria categoria2 = new Categoria("Tecnologia");
