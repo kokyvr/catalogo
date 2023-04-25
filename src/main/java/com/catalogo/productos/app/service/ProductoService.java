@@ -61,7 +61,7 @@ public class ProductoService implements ICrud<Producto>{
 	@Override
 	public Producto getByNombre(String nombre) {
 		// TODO Auto-generated method stub
-		return null;
+		return dao.findByNombre(nombre).orElse(null);
 	}
 
 	
