@@ -68,7 +68,7 @@ public class ProductoController {
 		if (Objects.nonNull(p)) {
 
 			rpta.put("producto", p);
-			return ResponseEntity.created(URI.create("/productos" + producto.getId())).body(rpta);
+			return ResponseEntity.created(URI.create("/productos/" + producto.getId())).body(rpta);
 		}
 
 		rpta.put("message", "ID " + id + " No ENCONTRADO");
@@ -92,7 +92,6 @@ public class ProductoController {
 	@GetMapping("/{nombre}")
 	public ResponseEntity<Producto> findByNombre(@PathVariable String nombre) {
 		Producto p = productoService.getByNombre(nombre);
-		log.info("Producto findByNombre getId {}", p);
 		if (Objects.nonNull(p)) {
 			return ResponseEntity.ok(p);
 		}

@@ -45,9 +45,7 @@ public class ProductoService implements ICrud<Producto>{
 			
 			dao.save(producto);
 		}
-		else {
-			producto = null;
-		}
+
 		return producto;
 		
 	}
