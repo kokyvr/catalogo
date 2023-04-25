@@ -27,6 +27,9 @@ public class AppCatalogoApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		categoriaDao.deleteAll();
+		productoDao.deleteAll();
+
 		Categoria categoria1 = new Categoria("Electrodomestico");
 		Categoria categoria2 = new Categoria("Tecnologia");
 		categoriaDao.saveAll(Arrays.asList(categoria1, categoria2));
@@ -34,8 +37,7 @@ public class AppCatalogoApplication implements CommandLineRunner {
 		Categoria categoriaBD = categoriaDao.findByNombre("Tecnologia").get();
 
 		productoDao.save(new Producto("MSI Monitor", 1140.50, 1, categoriaBD));
-		
-		
+
 	}
 
 }
