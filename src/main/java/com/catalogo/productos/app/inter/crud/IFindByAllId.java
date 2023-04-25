@@ -4,5 +4,5 @@ import java.util.Set;
 
 public interface IFindByAllId<T> {
 
-	public Set<T> findAllById(Set<String> ids);
+	public Iterable<T> findAllById(Set<String> ids);
 }

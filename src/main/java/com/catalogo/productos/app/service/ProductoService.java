@@ -73,9 +73,9 @@ public class ProductoService implements ICrudProductoWithImage{
 	}
 
 	@Override
-	public Set<Producto> findAllById(Set<String> ids) {
+	public Iterable<Producto> findAllById(Set<String> ids) {
 		// TODO Auto-generated method stub
-		return (Set<Producto>) dao.findAllById(ids);
+		return dao.findAllById(ids);
 	}
 
 	

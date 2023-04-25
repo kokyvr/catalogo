@@ -57,6 +57,7 @@ public class FacturaController {
 		});
 		factura.setTotal(factura.getProductos().stream().mapToDouble(p->p.getTotal()).sum());
 		Factura fabD = facturaService.save(factura);
+		factura.getProductos().stream().forEach(p->p.setFactura(fabD));
 		productoCarritoService.saveAll(fabD.getProductos().stream().collect(Collectors.toList()));
 		Map<String, Object> rpta = new HashMap<>();
 		if(Objects.nonNull(fabD)) {
