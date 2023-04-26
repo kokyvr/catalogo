@@ -20,31 +20,22 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 public class TokenUtils {
-
-	@Value("${ACCES_TOKNE_SECRET}")
-	private static String ACCES_TOKEN_SECRET;
-	@Value("${ACCES_TOKEN_VALIDITY_SECONDS}")
-	private static String ACCES_TOKEN_VALIDITY_SECONDS;
 	
-	/*
-	 @Value("${ACCES_TOKNE_SECRET}")
+	@Value("${ACCES_TOKEN_SECRET}")
 	private static String ACCES_TOKEN_SECRET= "eqweqweqweqwdasce1312fdqweeqweqwe1231eqdasdqweqweqwe";
 	@Value("${ACCES_TOKEN_VALIDITY_SECONDS}")
 	private static Long ACCES_TOKEN_VALIDITY_SECONDS = 2_592_000L;
-	  
-	 */
 	
-	private static Long converterToLong() {
-		return Long.parseLong(ACCES_TOKEN_VALIDITY_SECONDS);
-	}
+
 	
+
 	private static SecretKey hashBase64Bits() {
 		 byte[] keyBytes = Decoders.BASE64.decode(TokenUtils.ACCES_TOKEN_SECRET);
 		return Keys.hmacShaKeyFor(keyBytes);
 	}
 	
 	public static String createToken(String nombre,String email,Set<String> roles) {
-		long expirationTime = converterToLong() * 1_000;
+		long expirationTime = ACCES_TOKEN_VALIDITY_SECONDS * 1_000;
 		Date expirationDate = new Date(System.currentTimeMillis()  + expirationTime);
 		
 		Map<String,Object> extra = new HashMap<>();
