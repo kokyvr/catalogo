@@ -39,7 +39,7 @@ public class WebSecurity {
 		return http.httpBasic().disable()
 				.csrf().disable()
 				.authorizeRequests()
-				//.antMatchers(HttpMethod.GET,"/productos","/categorias").permitAll()
+				.antMatchers(HttpMethod.GET,"/productos","/categorias").permitAll()
 				.anyRequest()
 				.authenticated()
 				.and()
