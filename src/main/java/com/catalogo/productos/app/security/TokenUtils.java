@@ -1,6 +1,5 @@
 package com.catalogo.productos.app.security;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,8 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import com.catalogo.productos.app.model.Roles;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -25,9 +22,17 @@ import io.jsonwebtoken.security.Keys;
 public class TokenUtils {
 
 	@Value("${ACCES_TOKNE_SECRET}")
+	private static String ACCES_TOKEN_SECRET;
+	@Value("${ACCES_TOKEN_VALIDITY_SECONDS}")
+	private static Long ACCES_TOKEN_VALIDITY_SECONDS;
+	
+	/*
+	 @Value("${ACCES_TOKNE_SECRET}")
 	private static String ACCES_TOKEN_SECRET= "eqweqweqweqwdasce1312fdqweeqweqwe1231eqdasdqweqweqwe";
 	@Value("${ACCES_TOKEN_VALIDITY_SECONDS}")
 	private static Long ACCES_TOKEN_VALIDITY_SECONDS = 2_592_000L;
+	  
+	 */
 	
 	
 	private static SecretKey hashBase64Bits() {
