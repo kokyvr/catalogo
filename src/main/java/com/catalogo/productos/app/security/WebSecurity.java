@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.catalogo.productos.app.service.util.enu.ERoles;
+
 @Configuration
 public class WebSecurity {
 
@@ -19,6 +21,8 @@ public class WebSecurity {
 				.csrf().disable()
 				.authorizeHttpRequests()
 				.antMatchers(HttpMethod.GET,"/productos","/categorias").permitAll()
+				.antMatchers(HttpMethod.POST,"/productos","/categorias").hasAnyAuthority(ERoles.ROLE_ADMIN.toString(),ERoles.ROLE_MODERADOR.toString())
+				.antMatchers(HttpMethod.POST,"/factura").authenticated()
 				.and().httpBasic()
 				.and().build()
 				
