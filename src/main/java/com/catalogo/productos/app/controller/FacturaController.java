@@ -39,7 +39,7 @@ public class FacturaController {
 	public ResponseEntity<Map<String, Object>> ventaSave(@RequestBody Factura factura) {
 		Factura facturaBD = facturaService.save(factura);
 		Map<String, Object> rpta = new HashMap<>();
-		if (!facturaBD.getId().isEmpty()) {
+		if (factura.getId() != null) {
 
 			rpta.put("factura", facturaBD);
 			return ResponseEntity.ok(rpta);
