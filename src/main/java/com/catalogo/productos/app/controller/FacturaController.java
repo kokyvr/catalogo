@@ -33,64 +33,23 @@ public class FacturaController {
 	@Autowired
 	private ICrud<Factura> facturaService;
 
-	@Autowired
-	private ICrudProductoWithImage productoService;
-	
-	@Qualifier("productoCarritoService")
-	@Autowired
-	private ICarritoCrudAll<ProductoCarrito> productoCarritoService;
-
 	private static final Logger log = LoggerFactory.getLogger(FacturaController.class);
-	
+
 	@PostMapping
 	public ResponseEntity<Map<String, Object>> ventaSave(@RequestBody Factura factura) {
-		Iterable<Producto> productos = productoService
-				.findAllById(factura.getProductos().stream().map(ids -> ids.getIdProducto()).collect(Collectors.toSet()));
+		Factura facturaBD = facturaService.save(factura);
 		Map<String, Object> rpta = new HashMap<>();
-		if(productos.spliterator().getExactSizeIfKnown()>0) {
-			Set<ProductoCarrito> newProducto = factura.getProductos().stream().map(fa -> {
-				productos.forEach(p -> {
-					if (p.getId().equalsIgnoreCase(fa.getIdProducto())){
-						fa.setIdProducto(p.getId());
-						fa.setPrecio(p.getPrecio());
-						fa.setNombre(p.getNombre());
-						fa.setTotal(fa.calcularTotal());
-						
-						factura.agregarProducto(fa);
-						
-					}
-				});
-				return fa;
-			}).collect(Collectors.toSet());
-			Factura fabD = facturaService.save(factura);
-			factura.setProductos(newProducto.stream().map(np->{
-				np.setFactura(fabD);
-				return np;
-			}).collect(Collectors.toSet()));
-			factura.setTotal(factura.getProductos().stream().mapToDouble(p->p.getTotal()).sum());
-		
-			
-			productoCarritoService.saveAll(fabD.getProductos().stream().collect(Collectors.toList()));
-			
-			if(Objects.nonNull(fabD)) {
-				rpta.put("factura", fabD);
-				
-				return ResponseEntity.ok(rpta);
-			}
-			
-			rpta.put("error", "Hubo un error al comprar");
-			rpta.put("status", HttpStatus.BAD_REQUEST);
-			rpta.put("tiemstamp", new Date());
-			return ResponseEntity.badRequest().body(rpta);
+		if (!facturaBD.getId().isEmpty()) {
+
+			rpta.put("factura", facturaBD);
+			return ResponseEntity.ok(rpta);
 		}
-		rpta.put("error", "Carrito de compras vacio");
+		rpta.put("error", "Hubo un error al comprar");
 		rpta.put("status", HttpStatus.BAD_REQUEST);
 		rpta.put("tiemstamp", new Date());
 		return ResponseEntity.badRequest().body(rpta);
 		
-		
 
 	}
-
 
 }

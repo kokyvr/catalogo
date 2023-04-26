@@ -27,6 +27,14 @@ public class Factura {
 	
 	
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public Factura() {
 		this.productos = new HashSet<>();
 	
