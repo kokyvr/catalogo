@@ -3,9 +3,6 @@ package com.catalogo.productos.app.controller;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,12 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.catalogo.productos.app.inter.crud.ICarritoCrudAll;
 import com.catalogo.productos.app.inter.crud.ICrud;
-import com.catalogo.productos.app.inter.crud.ICrudProductoWithImage;
 import com.catalogo.productos.app.model.Factura;
-import com.catalogo.productos.app.model.Producto;
-import com.catalogo.productos.app.model.ProductoCarrito;
 
 @RequestMapping("/factura")
 @RestController
