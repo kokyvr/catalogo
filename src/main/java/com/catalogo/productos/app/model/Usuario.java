@@ -123,5 +123,14 @@ public class Usuario {
 	public void setRoles(Set<Roles> roles) {
 		this.roles = roles;
 	}
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Usuario [id=").append(id).append(", username=").append(username).append(", password=")
+				.append("*************").append(", fechaNacimiento=").append(fechaNacimiento).append(", roles=").append(roles)
+				.append(", correo=").append(correo).append(", numeroTelefono=").append(numeroTelefono)
+				.append(", enabled=").append(enabled).append("]");
+		return builder.toString();
+	}
 	
 }

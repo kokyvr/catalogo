@@ -4,16 +4,19 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.catalogo.productos.app.model.Usuario;
 
-public class SecurityUser  implements UserDetails{
+public class UserDetailImp implements UserDetails{
 
 	private static final long serialVersionUID = 1L;
+	
+	
 	private final Usuario user;
 	
-	public SecurityUser(Usuario user) {
+	public UserDetailImp(Usuario user) {
 		this.user = user;
 	}
 
@@ -23,8 +26,7 @@ public class SecurityUser  implements UserDetails{
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return user.getRoles().stream().map(SecurityAuthority::new).collect(Collectors.toList());
+		return user.getRoles().stream().map(r->new SimpleGrantedAuthority(r.getRole())).collect(Collectors.toList());
 	}
 
 	@Override
@@ -63,4 +65,14 @@ public class SecurityUser  implements UserDetails{
 		return true;
 	}
 
+	public String getNombre() {
+		return user.getCorreo();
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("UserDetailImp [user=").append(user).append("]");
+		return builder.toString();
+	}
 }

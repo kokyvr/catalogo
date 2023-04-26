@@ -8,5 +8,5 @@ import com.catalogo.productos.app.model.Usuario;
 
 public interface UsuarioDao extends MongoRepository<Usuario, String>{
 
-	Optional<Usuario> findByUsername(String username);
+	Optional<Usuario> findOneByUsername(String username);
 }

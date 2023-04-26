@@ -37,6 +37,13 @@ public class Roles implements Serializable{
 	public void setRole(String role) {
 		this.role = role;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Roles [role=").append(role).append("]");
+		return builder.toString();
+	}
 	
 	
 }
