@@ -3,13 +3,16 @@ package com.catalogo.productos.app.security;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.catalogo.productos.app.model.Roles;
 
@@ -50,15 +53,17 @@ public class TokenUtils {
 	public static UsernamePasswordAuthenticationToken getAuthentication(String token) {
 		try {
 			Claims claims= Jwts.parserBuilder()
-					.setSigningKey(ACCES_TOKEN_SECRET.toString().getBytes())
+					.setSigningKey(hashBase64Bits())
 					.build()
 					.parseClaimsJws(token)
 					.getBody();
 			
 			String email = claims.getSubject();
-			
-			return new UsernamePasswordAuthenticationToken(email, null,Collections.emptyList());
+			@SuppressWarnings("unchecked")
+			List<String> roles = claims.get("roles", List.class);
+			return new UsernamePasswordAuthenticationToken(email, null,roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
 		} catch (JwtException e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
