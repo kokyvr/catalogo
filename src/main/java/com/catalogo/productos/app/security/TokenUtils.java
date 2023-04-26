@@ -24,7 +24,7 @@ public class TokenUtils {
 	@Value("${ACCES_TOKNE_SECRET}")
 	private static String ACCES_TOKEN_SECRET;
 	@Value("${ACCES_TOKEN_VALIDITY_SECONDS}")
-	private static Long ACCES_TOKEN_VALIDITY_SECONDS;
+	private static String ACCES_TOKEN_VALIDITY_SECONDS;
 	
 	/*
 	 @Value("${ACCES_TOKNE_SECRET}")
@@ -34,6 +34,9 @@ public class TokenUtils {
 	  
 	 */
 	
+	private static Long converterToLong() {
+		return Long.parseLong(ACCES_TOKEN_VALIDITY_SECONDS);
+	}
 	
 	private static SecretKey hashBase64Bits() {
 		 byte[] keyBytes = Decoders.BASE64.decode(TokenUtils.ACCES_TOKEN_SECRET);
@@ -41,7 +44,7 @@ public class TokenUtils {
 	}
 	
 	public static String createToken(String nombre,String email,Set<String> roles) {
-		long expirationTime = ACCES_TOKEN_VALIDITY_SECONDS * 1_000;
+		long expirationTime = converterToLong() * 1_000;
 		Date expirationDate = new Date(System.currentTimeMillis()  + expirationTime);
 		
 		Map<String,Object> extra = new HashMap<>();
@@ -68,7 +71,6 @@ public class TokenUtils {
 			List<String> roles = claims.get("roles", List.class);
 			return new UsernamePasswordAuthenticationToken(email, null,roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
 		} catch (JwtException e) {
-			e.printStackTrace();
 			return null;
 		}
 	}
