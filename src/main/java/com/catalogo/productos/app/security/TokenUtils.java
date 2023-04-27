@@ -21,21 +21,19 @@ import io.jsonwebtoken.security.Keys;
 
 public class TokenUtils {
 	
-	@Value("${ACCES_TOKEN_SECRET}")
-	private  String ACCES_TOKEN_SECRET;
-	@Value("${ACCES_TOKEN_VALIDITY_SECONDS}")
-	private  Long ACCES_TOKEN_VALIDITY_SECONDS;
+
+	private TokenUtils() {
+		
+	}
 	
 
-	
-
-	private  SecretKey hashBase64Bits() {
-		 byte[] keyBytes = Decoders.BASE64.decode(ACCES_TOKEN_SECRET);
+	private  static SecretKey hashBase64Bits() {
+		 byte[] keyBytes = Decoders.BASE64.decode(Properties.getACCES_TOKEN_SECRET());
 		return Keys.hmacShaKeyFor(keyBytes);
 	}
 	
-	public  String createToken(String nombre,String email,Set<String> roles) {
-		long expirationTime = ACCES_TOKEN_VALIDITY_SECONDS * 1_000;
+	public  static String createToken(String nombre,String email,Set<String> roles) {
+		long expirationTime = Properties.getACCES_TOKEN_VALIDITY_SECONDS() * 1_000;
 		Date expirationDate = new Date(System.currentTimeMillis()  + expirationTime);
 		
 		Map<String,Object> extra = new HashMap<>();
@@ -49,7 +47,7 @@ public class TokenUtils {
 				.compact();
 				
 	}
-	public  UsernamePasswordAuthenticationToken getAuthentication(String token) {
+	public  static UsernamePasswordAuthenticationToken getAuthentication(String token) {
 		try {
 			Claims claims= Jwts.parserBuilder()
 					.setSigningKey(hashBase64Bits())
