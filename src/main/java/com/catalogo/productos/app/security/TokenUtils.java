@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 
 import javax.crypto.SecretKey;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -21,19 +20,21 @@ import io.jsonwebtoken.security.Keys;
 
 public class TokenUtils {
 	
-
-	private TokenUtils() {
+	private Properties properties;
+	
+	public TokenUtils() {
 		
+		this.properties = new Properties();
 	}
 	
 
-	private  static SecretKey hashBase64Bits() {
-		 byte[] keyBytes = Decoders.BASE64.decode(Properties.getACCES_TOKEN_SECRET());
+	private   SecretKey hashBase64Bits() {
+		 byte[] keyBytes = Decoders.BASE64.decode(properties.getACCES_TOKEN_SECRET());
 		return Keys.hmacShaKeyFor(keyBytes);
 	}
 	
-	public  static String createToken(String nombre,String email,Set<String> roles) {
-		long expirationTime = Properties.getACCES_TOKEN_VALIDITY_SECONDS() * 1_000;
+	public   String createToken(String nombre,String email,Set<String> roles) {
+		long expirationTime = properties.getACCES_TOKEN_VALIDITY_SECONDS() * 1_000;
 		Date expirationDate = new Date(System.currentTimeMillis()  + expirationTime);
 		
 		Map<String,Object> extra = new HashMap<>();
@@ -47,7 +48,7 @@ public class TokenUtils {
 				.compact();
 				
 	}
-	public  static UsernamePasswordAuthenticationToken getAuthentication(String token) {
+	public   UsernamePasswordAuthenticationToken getAuthentication(String token) {
 		try {
 			Claims claims= Jwts.parserBuilder()
 					.setSigningKey(hashBase64Bits())
