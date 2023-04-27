@@ -1,9 +1,5 @@
 package com.catalogo.productos.app.security;
 
-import java.util.Collection;
-
-import org.springframework.security.core.GrantedAuthority;
-
 public class AuthCredentials {
 
 	private String username;

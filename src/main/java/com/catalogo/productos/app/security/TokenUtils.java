@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -20,21 +21,25 @@ import io.jsonwebtoken.security.Keys;
 
 public class TokenUtils {
 	
-	private Properties properties;
-	
-	public TokenUtils() {
-		
-		this.properties = new Properties();
+	private TokenUtils() {
+		// TODO Auto-generated constructor stub
 	}
 	
+	@Value("${ACCES_TOKEN_SECRET}")
+	private static String ACCES_TOKEN_SECRET= "eqweqweqweqwdasce1312fdqweeqweqwe1231eqdasdqweqweqwe";
+	@Value("${ACCES_TOKEN_VALIDITY_SECONDS}")
+	private static Long ACCES_TOKEN_VALIDITY_SECONDS = 2_592_000L;
+	
 
-	private   SecretKey hashBase64Bits() {
-		 byte[] keyBytes = Decoders.BASE64.decode(properties.getACCES_TOKEN_SECRET());
+	
+
+	private static SecretKey hashBase64Bits() {
+		 byte[] keyBytes = Decoders.BASE64.decode(TokenUtils.ACCES_TOKEN_SECRET);
 		return Keys.hmacShaKeyFor(keyBytes);
 	}
 	
-	public   String createToken(String nombre,String email,Set<String> roles) {
-		long expirationTime = properties.getACCES_TOKEN_VALIDITY_SECONDS() * 1_000;
+	public static String createToken(String nombre,String email,Set<String> roles) {
+		long expirationTime = ACCES_TOKEN_VALIDITY_SECONDS * 1_000;
 		Date expirationDate = new Date(System.currentTimeMillis()  + expirationTime);
 		
 		Map<String,Object> extra = new HashMap<>();
@@ -48,7 +53,7 @@ public class TokenUtils {
 				.compact();
 				
 	}
-	public   UsernamePasswordAuthenticationToken getAuthentication(String token) {
+	public static UsernamePasswordAuthenticationToken getAuthentication(String token) {
 		try {
 			Claims claims= Jwts.parserBuilder()
 					.setSigningKey(hashBase64Bits())
