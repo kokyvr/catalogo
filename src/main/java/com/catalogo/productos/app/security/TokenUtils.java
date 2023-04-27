@@ -22,19 +22,19 @@ import io.jsonwebtoken.security.Keys;
 public class TokenUtils {
 	
 	@Value("${ACCES_TOKEN_SECRET}")
-	private static String ACCES_TOKEN_SECRET= "eqweqweqweqwdasce1312fdqweeqweqwe1231eqdasdqweqweqwe";
+	private  String ACCES_TOKEN_SECRET;
 	@Value("${ACCES_TOKEN_VALIDITY_SECONDS}")
-	private static Long ACCES_TOKEN_VALIDITY_SECONDS = 2_592_000L;
+	private  Long ACCES_TOKEN_VALIDITY_SECONDS;
 	
 
 	
 
-	private static SecretKey hashBase64Bits() {
-		 byte[] keyBytes = Decoders.BASE64.decode(TokenUtils.ACCES_TOKEN_SECRET);
+	private  SecretKey hashBase64Bits() {
+		 byte[] keyBytes = Decoders.BASE64.decode(ACCES_TOKEN_SECRET);
 		return Keys.hmacShaKeyFor(keyBytes);
 	}
 	
-	public static String createToken(String nombre,String email,Set<String> roles) {
+	public  String createToken(String nombre,String email,Set<String> roles) {
 		long expirationTime = ACCES_TOKEN_VALIDITY_SECONDS * 1_000;
 		Date expirationDate = new Date(System.currentTimeMillis()  + expirationTime);
 		
@@ -49,7 +49,7 @@ public class TokenUtils {
 				.compact();
 				
 	}
-	public static UsernamePasswordAuthenticationToken getAuthentication(String token) {
+	public  UsernamePasswordAuthenticationToken getAuthentication(String token) {
 		try {
 			Claims claims= Jwts.parserBuilder()
 					.setSigningKey(hashBase64Bits())
